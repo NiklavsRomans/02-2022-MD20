@@ -1,28 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.scss';
+import CurrencyButton from './components/currencybutton/CurrencyButton';
+import SelectedCurrencyBox from './components/selectedcurrencybox/SelectedCurrencyBox';
+import Currencies from './data/Currencies';
 
-const App = () => (
-  <div className="App">
-    <header className="App-header">
-      <img src={logo} className="App-logo" alt="logo" />
-      <p>
-        Edit
-        {' '}
-        <code>src/App.tsx</code>
-        {' '}
-        and save to reload.
-      </p>
-      <a
-        className="App-link"
-        href="https://reactjs.org"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Learn React
-      </a>
-    </header>
-  </div>
-);
+const App = () => {
+  // State
+  const [currencies, setCurrencies] = useState(Currencies);
+
+  // Handler
+
+  const handleSelect = (i: number) => {
+    const newCurrencies = [...currencies];
+    newCurrencies[i].selected = !newCurrencies[i].selected;
+    setCurrencies(newCurrencies);
+  };
+
+  return (
+    <div className="App">
+      <div className="currency__box">
+        <div className="currency__box--wrapper">
+          {currencies.map(({ currency, selected }, i) => (
+            selected && (
+              <SelectedCurrencyBox title={currency} onClick={() => handleSelect(i)} />
+            )
+          ))}
+        </div>
+        <div className="currency__box--wrapper">
+          {currencies.map(({ currency, selected }, i) => (
+            <CurrencyButton selected={selected} title={currency} onClick={() => handleSelect(i)} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default App;
